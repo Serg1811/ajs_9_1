@@ -1,26 +1,28 @@
 import Character from './Character';
 
 export default class MagicCharacter extends Character {
-  setStoned() {
-    this.stoned = true;
+  constructor(name, type) {
+    super(name, type);
+    this._stoned = false;
   }
 
-  getStoned() {
-    return this.stoned;
+  set stoned(stoned) {
+    this._stoned = stoned;
   }
 
-  setAttack(x) {
-    if (x > 1) {
-      this.attack -= (this.attack * ((x - 1) / 10));
+  get stoned() {
+    return this._stoned;
+  }
+
+  get attack() {
+    let superAttack = (this._attack * (1 - ((this._distanceAttack - 1) / 10)));
+    if (this._stoned) {
+      superAttack -= Math.round(Math.log2(this._distanceAttack) * 5);
     }
-
-    if (this.stoned) {
-      this.attack = Math.round(this.attack - Math.log2(x) * 5);
-    }
-    return this.attack;
+    return superAttack > 0 ? superAttack : 0;
   }
 
-  getAttack() {
-    return this.attack;
+  set attack(attack) {
+    this._attack = attack;
   }
 }
